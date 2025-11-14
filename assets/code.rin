@@ -1,1 +1,14 @@
-/create value age 25 type number
+/create val age 25 as int
+/create var variableAge 24 as int
+/create var name "John Doe" as string
+/create val pi 3.14159 as float
+/create val isStudent true as bool
+/print "Name: " + name
+/print "Age: " + age
+/print "Variable Age: " + variableAge
+/print "Pi: " + pi
+/print "Is Student: " + isStudent
+/set variableAge 26
+/print "Updated Variable Age: " + variableAge
+
+/

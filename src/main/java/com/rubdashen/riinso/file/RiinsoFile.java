@@ -1,14 +1,9 @@
-package com.rubdashen.tools.reader;
+package com.rubdashen.riinso.file;
 
+import com.rubdashen.tools.reader.FileReader;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-public class FileReader {
+public final class RiinsoFile {
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
 //				    Members and Fields
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
@@ -16,7 +11,7 @@ public class FileReader {
     //	-------------------------------------------
     //			        Variables
     //	-------------------------------------------
-    private @Nullable String mFileContent;
+    public final FileReader mFileReader = new FileReader();
 
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
 //			        Functions and Methods
@@ -25,30 +20,28 @@ public class FileReader {
     //	-------------------------------------------
     //			        Constructors
     //	-------------------------------------------
-    public FileReader() { }
+    public RiinsoFile() { }
 
     //	-------------------------------------------
     //			        Functions
     //	-------------------------------------------
-    public boolean readFile(@NotNull String filePath) {
-        final Path path = Path.of(filePath);
-        try {
-            this.mFileContent = Files.readString(path, StandardCharsets.UTF_8);
-            return true;
+    public @NotNull String readFile(@NotNull String filePath) {
+        if (!this.mFileReader.readFile(filePath)) {
+            throw new RuntimeException("Error reading file with path: " + filePath);
         }
-        catch (IOException e) {
-            return false;
+
+        final @NotNull String content = this.mFileReader.getFileContent();
+
+        if (content.isEmpty()) {
+            throw new RuntimeException("File content is empty for file with path: " + filePath);
         }
+
+        System.out.println(content);
+
+        return content;
     }
 
     //	-------------------------------------------
     //			    Setters and Getters
     //	-------------------------------------------
-    public @NotNull String getFileContent() {
-        if (this.mFileContent == null) {
-            throw new RuntimeException("File content is null.");
-        }
-
-        return this.mFileContent;
-    }
 }

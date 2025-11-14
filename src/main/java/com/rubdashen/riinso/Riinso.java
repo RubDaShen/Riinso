@@ -1,14 +1,11 @@
-package com.rubdashen.tools.reader;
+package com.rubdashen.riinso;
 
+import com.rubdashen.riinso.interpreter.RiinsoInterpreter;
+import com.rubdashen.riinso.file.RiinsoFile;
+import com.rubdashen.tools.reader.FileReader;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-public class FileReader {
+public final class Riinso {
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
 //				    Members and Fields
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
@@ -16,7 +13,8 @@ public class FileReader {
     //	-------------------------------------------
     //			        Variables
     //	-------------------------------------------
-    private @Nullable String mFileContent;
+    private final RiinsoFile mFile = new RiinsoFile();
+    private final RiinsoInterpreter mInterpreter = new RiinsoInterpreter();
 
 //	|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-|
 //			        Functions and Methods
@@ -25,30 +23,17 @@ public class FileReader {
     //	-------------------------------------------
     //			        Constructors
     //	-------------------------------------------
-    public FileReader() { }
+    public Riinso() { }
 
     //	-------------------------------------------
     //			        Functions
     //	-------------------------------------------
-    public boolean readFile(@NotNull String filePath) {
-        final Path path = Path.of(filePath);
-        try {
-            this.mFileContent = Files.readString(path, StandardCharsets.UTF_8);
-            return true;
-        }
-        catch (IOException e) {
-            return false;
-        }
+    public void compile(@NotNull String filePath) {
+        final @NotNull String content = this.mFile.readFile(filePath);
+        this.mInterpreter.interpret(content);
     }
 
     //	-------------------------------------------
     //			    Setters and Getters
     //	-------------------------------------------
-    public @NotNull String getFileContent() {
-        if (this.mFileContent == null) {
-            throw new RuntimeException("File content is null.");
-        }
-
-        return this.mFileContent;
-    }
 }
